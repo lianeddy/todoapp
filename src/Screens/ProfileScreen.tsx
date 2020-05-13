@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
-import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {HomeTabProps} from '../Navigation/HomeTab';
-import {useSelector, useDispatch} from 'react-redux';
-import {url} from '../config/API_URL';
 import {MainDrawerParams} from '../Navigation/MainDrawer';
+import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import {useTypedSelector} from '../Redux/reducer';
+import {useDispatch} from 'react-redux';
+import React, {useEffect} from 'react';
 import {fetchTodo} from '../Redux/todo';
-import {Button} from 'react-native-elements';
+import {View, Image, Text, Button, StyleSheet} from 'react-native';
+import {url} from '../config/API_URL';
+import {FlatList} from 'react-native-gesture-handler';
 
 type ProfileScreenNavigationProps = DrawerNavigationProp<
   MainDrawerParams,
@@ -15,14 +16,31 @@ type ProfileScreenNavigationProps = DrawerNavigationProp<
 
 type Props = {
   navigation: ProfileScreenNavigationProps;
-  route: HomeTabProps;
+  route: BottomTabBarProps;
 };
 
-const ProfileScreen: React.SFC<Props> = ({route: {params}, navigation}) => {
-  const auth = useSelector(state => state.auth);
-  const todo = useSelector(state => state.todo);
-  const dispatch = useDispatch();
+interface DataListParams {
+  id: string;
+  imagePath: string;
+}
+
+// export type AuthState = {
+//   auth: {
+//     id: number;
+//     displayPicture: number;
+//     username: string;
+//   };
+//   todo: {
+//     dataList: Array<DataListParams>;
+//     loading: boolean;
+//   };
+// };
+
+const ProfileScreen: React.SFC<Props> = ({navigation}) => {
+  const auth = useTypedSelector(state => state.auth);
+  const todo = useTypedSelector(state => state.todo);
   console.log(todo);
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTodo(auth.id));
   }, [auth.id, dispatch]);
@@ -44,23 +62,21 @@ const ProfileScreen: React.SFC<Props> = ({route: {params}, navigation}) => {
         <Button
           title="Profile"
           onPress={() => navigation.toggleDrawer()}
-          buttonStyle={{backgroundColor: params.color}}
+          // buttonStyle={{backgroundColor: params.color}}
         />
       </View>
     );
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       {renderProfileInfo()}
       <FlatList
-        // ListHeaderComponent={renderProfileInfo}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         refreshing={todo.loading}
         onRefresh={() => dispatch(fetchTodo(auth.id))}
         data={todo.dataList}
         numColumns={3}
-        contentContainerStyle={styles.todoContainer}
         ItemSeparatorComponent={renderSeparator}
         renderItem={({item}) => (
           <Image

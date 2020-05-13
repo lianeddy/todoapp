@@ -1,10 +1,9 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
-import MainNavigation from './Navigation/MainNavigation';
+import MainNavigation from './src/Navigation/MainNavigation';
 import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
-import reducer from './Redux/reducer';
+import reducer from './src/Redux/reducer';
 
 const store = configureStore({
   reducer,
@@ -13,9 +12,7 @@ const store = configureStore({
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <MainNavigation />
-      </NavigationContainer>
+      <MainNavigation />
     </Provider>
   );
 };

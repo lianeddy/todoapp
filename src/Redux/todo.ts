@@ -2,11 +2,18 @@ import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import {url} from '../config/API_URL';
+import {AppThunk} from './reducer';
+
+interface TodoParamsList {
+  id: number;
+  todo: string;
+  imagePath: string;
+}
 
 const {actions, reducer} = createSlice({
   name: 'todo',
   initialState: {
-    dataList: [],
+    dataList: [] as Array<TodoParamsList>,
     error: '',
     loading: false,
   },
@@ -30,7 +37,7 @@ const {actions, reducer} = createSlice({
 
 let token = AsyncStorage.getItem('token');
 
-export const fetchTodo = id => {
+export const fetchTodo = (id: number): AppThunk => {
   return async dispatch => {
     dispatch(todo_start());
     let headers = {

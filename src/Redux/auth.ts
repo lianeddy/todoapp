@@ -1,7 +1,13 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import {url} from '../config/API_URL';
+import {AppThunk} from './reducer';
+
+type AuthParams = {
+  username: string;
+  password: string;
+};
 
 const {actions, reducer} = createSlice({
   name: 'auth',
@@ -20,14 +26,14 @@ const {actions, reducer} = createSlice({
     auth_start: state => {
       state.loading = true;
     },
-    auth_success: (state, action) => {
+    auth_success: (state, action: PayloadAction<object>) => {
       return {
         ...state,
         ...action.payload,
         loading: false,
       };
     },
-    auth_failed: (state, action) => {
+    auth_failed: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -37,7 +43,7 @@ const {actions, reducer} = createSlice({
   },
 });
 
-export const LoginAction = data => {
+export const LoginAction = (data: AuthParams): AppThunk => {
   return async dispatch => {
     dispatch(auth_start());
     try {
@@ -61,7 +67,7 @@ export const LoginAction = data => {
   };
 };
 
-export const KeepLogin = () => {
+export const KeepLogin = (): AppThunk => {
   return async dispatch => {
     dispatch(auth_start());
     try {
