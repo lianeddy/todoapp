@@ -1,15 +1,15 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import {url} from '../config/API_URL';
-import {AppThunk} from './reducer';
+import { url } from '../config/API_URL';
+import { AppThunk } from './reducer';
 
 type AuthParams = {
   username: string;
   password: string;
 };
 
-const {actions, reducer} = createSlice({
+const { actions, reducer } = createSlice({
   name: 'auth',
   initialState: {
     id: 0,
@@ -23,7 +23,7 @@ const {actions, reducer} = createSlice({
     displayPicture: null,
   },
   reducers: {
-    auth_start: state => {
+    auth_start: (state) => {
       state.loading = true;
     },
     auth_success: (state, action: PayloadAction<object>) => {
@@ -37,18 +37,21 @@ const {actions, reducer} = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    token_checked: state => {
+    token_checked: (state) => {
       state.checkToken = true;
     },
   },
 });
 
+export default reducer;
+export const { auth_start, auth_failed, auth_success, token_checked } = actions;
+
 export const LoginAction = (data: AuthParams): AppThunk => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(auth_start());
     try {
-      let res = await axios.post(`${url}/users/login`, data);
-      let {
+      const res = await axios.post(`${url}/users/login`, data);
+      const {
         id,
         username,
         roleId,
@@ -58,7 +61,7 @@ export const LoginAction = (data: AuthParams): AppThunk => {
         displayPicture,
       } = res.data.data;
       dispatch(
-        auth_success({id, username, roleId, email, verified, displayPicture}),
+        auth_success({ id, username, roleId, email, verified, displayPicture }),
       );
       AsyncStorage.setItem('token', token);
     } catch (err) {
@@ -68,25 +71,22 @@ export const LoginAction = (data: AuthParams): AppThunk => {
 };
 
 export const KeepLogin = (): AppThunk => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(auth_start());
     try {
-      let token = AsyncStorage.getItem('token');
+      const token = AsyncStorage.getItem('token');
       dispatch(token_checked());
-      let headers = {
+      const headers = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-      let res = await axios.post(`${url}/users/keep-login`, {}, headers);
-      let {id, username, roleId, email, verified} = res.data.data;
-      dispatch(auth_success({id, username, roleId, email, verified}));
+      const res = await axios.post(`${url}/users/keep-login`, {}, headers);
+      const { id, username, roleId, email, verified } = res.data.data;
+      dispatch(auth_success({ id, username, roleId, email, verified }));
     } catch (err) {
       dispatch(auth_failed(err.message));
       dispatch(token_checked());
     }
   };
 };
-
-export default reducer;
-export const {auth_start, auth_failed, auth_success, token_checked} = actions;

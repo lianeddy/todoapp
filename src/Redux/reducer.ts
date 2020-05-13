@@ -1,6 +1,6 @@
-import {combineReducers, ThunkAction} from '@reduxjs/toolkit';
-import {useSelector, TypedUseSelectorHook} from 'react-redux';
-import {Action} from 'redux';
+import { combineReducers, ThunkAction } from '@reduxjs/toolkit';
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
+import { Action } from 'redux';
 import auth from './auth';
 import todo from './todo';
 

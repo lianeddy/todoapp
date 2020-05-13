@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {LoginScreen, RegisterScreen} from '../Screens';
+import { createStackNavigator } from '@react-navigation/stack';
+import { LoginScreen, RegisterScreen } from '../Screens';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  MainApp: {color: string};
+  MainApp: { color: string };
 };
 const Stack = createStackNavigator<RootStackParamList>();
 

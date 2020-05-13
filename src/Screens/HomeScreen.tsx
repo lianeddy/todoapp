@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Button} from 'react-native';
+import { View, Button } from 'react-native';
 
 const HomeScreen: React.FC = () => {
   // console.log(params.color);

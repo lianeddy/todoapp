@@ -1,3 +1,3 @@
 import WelcomeIcon from './WelcomeIcon';
 
-export {WelcomeIcon};
+export { WelcomeIcon };

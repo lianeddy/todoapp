@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-// import {HomeScreen} from '../Screens';
-import {StyleSheet} from 'react-native';
-import SettingScreen from '../Screens/SettingScreen';
-import {Icon} from 'react-native-elements';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import {HomeScreen} from 'Screens';
+import { StyleSheet } from 'react-native';
+import { Icon } from 'react-native-elements';
 import HomeTab from './HomeTab';
+import SettingScreen from 'Screens/SettingScreen';
 
 export type MainDrawerParams = {
   Home: undefined;
@@ -25,18 +25,18 @@ const MainDrawer: React.FC = () => {
       drawerContentOptions={{
         activeTintColor: 'black',
         activeBackgroundColor: '#fff',
-        contentContainerStyle: {justifyContent: 'flex-end'},
+        contentContainerStyle: { justifyContent: 'flex-end' },
       }}>
       <Drawer.Screen
         name="Home"
         component={HomeTab}
-        options={{drawerLabel: () => null}}
+        options={{ drawerLabel: () => null }}
       />
       <Drawer.Screen
         name="Settings"
         component={SettingScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             <Icon name="cog" type="font-awesome" size={25} color={color} />
           ),
         }}

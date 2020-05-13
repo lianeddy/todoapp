@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Input, Icon, Button} from 'react-native-elements';
-import {WelcomeIcon} from '../Components';
-import {StackActions} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useDispatch, useSelector} from 'react-redux';
-import {LoginAction} from '../Redux/auth';
-import {RootStackParamList} from '../Navigation/Authstack';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Input, Icon, Button } from 'react-native-elements';
+import { StackActions } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
+import { WelcomeIcon } from '../Components';
+import { useTypedSelector } from '../Redux/reducer';
+import { LoginAction } from '../Redux/auth';
+import { RootStackParamList } from '../Navigation/Authstack';
 
 type LoginScreenNavigationProps = StackNavigationProp<
   RootStackParamList,
@@ -24,14 +25,13 @@ interface AuthState {
   };
 }
 
-const LoginScreen: React.FC<Props> = ({navigation}) => {
-  let [username, setUsername] = React.useState('');
-  let [password, setPassword] = React.useState('');
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const selectLoading = (state: AuthState) => state.auth.loading;
-  const selectUserData = (state: AuthState) => state.auth;
-  const loading = useSelector(selectLoading);
-  const userData = useSelector(selectUserData);
+
+  const loading = useTypedSelector((state) => state.auth.loading);
+  const userData = useTypedSelector((state) => state.auth);
   useEffect(() => {
     if (userData.username) {
       navigation.dispatch(StackActions.replace('MainApp'));
@@ -43,14 +43,14 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
       <WelcomeIcon />
       <View style={styles.textInput}>
         <Input
-          onChangeText={e => setUsername(e)}
+          onChangeText={(e) => setUsername(e)}
           value={username}
           placeholder="Username"
           leftIcon={<Icon name="email" size={24} color="black" />}
         />
 
         <Input
-          onChangeText={e => setPassword(e)}
+          onChangeText={(e) => setPassword(e)}
           value={password}
           placeholder="Password"
           leftIcon={<Icon name="lock" size={24} color="black" />}
@@ -63,7 +63,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
           containerStyle={styles.buttonContainer}
           buttonStyle={styles.buttonStyle}
           // onPress={handleLogin}
-          onPress={() => dispatch(LoginAction({username, password}))}
+          onPress={() => dispatch(LoginAction({ username, password }))}
           loading={loading}
         />
         <Button

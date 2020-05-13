@@ -1,8 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import {url} from '../config/API_URL';
-import {AppThunk} from './reducer';
+import { url } from '../config/API_URL';
+import { AppThunk } from './reducer';
 
 interface TodoParamsList {
   id: number;
@@ -10,7 +10,7 @@ interface TodoParamsList {
   imagePath: string;
 }
 
-const {actions, reducer} = createSlice({
+const { actions, reducer } = createSlice({
   name: 'todo',
   initialState: {
     dataList: [] as Array<TodoParamsList>,
@@ -18,7 +18,7 @@ const {actions, reducer} = createSlice({
     loading: false,
   },
   reducers: {
-    todo_start: state => {
+    todo_start: (state) => {
       state.loading = true;
     },
     todo_success: (state, action) => {
@@ -35,18 +35,18 @@ const {actions, reducer} = createSlice({
   },
 });
 
-let token = AsyncStorage.getItem('token');
+const token = AsyncStorage.getItem('token');
 
 export const fetchTodo = (id: number): AppThunk => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(todo_start());
-    let headers = {
+    const headers = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
     try {
-      let res = await axios.get(`${url}/todo/get-todo/${id}`, headers);
+      const res = await axios.get(`${url}/todo/get-todo/${id}`, headers);
       dispatch(todo_success(res.data.dataList));
     } catch (err) {
       dispatch(todo_failed(err.message));
@@ -55,4 +55,4 @@ export const fetchTodo = (id: number): AppThunk => {
 };
 
 export default reducer;
-export const {todo_start, todo_success, todo_failed} = actions;
+export const { todo_start, todo_success, todo_failed } = actions;

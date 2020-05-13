@@ -1,13 +1,13 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {MainDrawerParams} from '../Navigation/MainDrawer';
-import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {useTypedSelector} from '../Redux/reducer';
-import {useDispatch} from 'react-redux';
-import React, {useEffect} from 'react';
-import {fetchTodo} from '../Redux/todo';
-import {View, Image, Text, Button, StyleSheet} from 'react-native';
-import {url} from '../config/API_URL';
-import {FlatList} from 'react-native-gesture-handler';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { View, Image, Text, Button, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { fetchTodo } from '../Redux/todo';
+import { url } from '../config/API_URL';
+import { useTypedSelector } from '../Redux/reducer';
+import { MainDrawerParams } from '../Navigation/MainDrawer';
 
 type ProfileScreenNavigationProps = DrawerNavigationProp<
   MainDrawerParams,
@@ -36,9 +36,9 @@ interface DataListParams {
 //   };
 // };
 
-const ProfileScreen: React.SFC<Props> = ({navigation}) => {
-  const auth = useTypedSelector(state => state.auth);
-  const todo = useTypedSelector(state => state.todo);
+const ProfileScreen: React.FC<Props> = ({ navigation }) => {
+  const auth = useTypedSelector((state) => state.auth);
+  const todo = useTypedSelector((state) => state.todo);
   console.log(todo);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -53,7 +53,7 @@ const ProfileScreen: React.SFC<Props> = ({navigation}) => {
     return (
       <View style={styles.profileInfoContainer}>
         <Image
-          source={{uri: `${url}/${auth.displayPicture}`}}
+          source={{ uri: `${url}/${auth.displayPicture}` }}
           style={styles.displayPicture}
         />
         <View>
@@ -72,15 +72,15 @@ const ProfileScreen: React.SFC<Props> = ({navigation}) => {
     <View style={styles.container}>
       {renderProfileInfo()}
       <FlatList
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         refreshing={todo.loading}
         onRefresh={() => dispatch(fetchTodo(auth.id))}
         data={todo.dataList}
         numColumns={3}
         ItemSeparatorComponent={renderSeparator}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <Image
-            source={{uri: `${url}/${item.imagePath}`}}
+            source={{ uri: `${url}/${item.imagePath}` }}
             style={styles.imageTodo}
           />
         )}

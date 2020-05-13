@@ -1,22 +1,26 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "jsx": "react",
-    "lib": ["es2015", "es2015.promise", "es2016.array.include", "dom"],
+    "allowSyntheticDefaultImports": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@todoapp/*": ["src"]
-    },
-    "noEmit": true,
     "resolveJsonModule": true,
-    "target": "esnext",
-    "types": ["jest"]
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-native",
+    "baseUrl": "src"
   },
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
